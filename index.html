@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="pageTitle">Taller IA-Intermedio</title>
+  <style>
+    :root {
+      --bg: #f5f9fb;
+      --card: rgba(255,255,255,0.94);
+      --text: #173042;
+      --muted: #5f7482;
+      --line: #d8e7ee;
+      --primary: #0f7ba8;
+      --primary-2: #0ea6b7;
+      --shadow: 0 18px 45px rgba(16, 63, 92, 0.12);
+      --radius: 22px;
+      --container: 1320px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(14,166,183,.12), transparent 28%),
+        radial-gradient(circle at top right, rgba(15,123,168,.10), transparent 24%),
+        linear-gradient(180deg, #f7fbfd 0%, #eef6fa 100%);
+    }
+
+    .container {
+      width: min(var(--container), calc(100% - 24px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 28px 0 26px;
+      border-bottom: 1px solid rgba(15,123,168,.08);
+      background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.76));
+      backdrop-filter: blur(10px);
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      filter: blur(50px);
+      opacity: .18;
+      pointer-events: none;
+    }
+
+    .hero::before { background: #0ea6b7; top: -130px; left: -60px; }
+    .hero::after { background: #72c2ff; right: -60px; top: -120px; }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: auto 1fr auto auto;
+      align-items: center;
+      gap: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,.9);
+      border: 1px solid rgba(15,123,168,.1);
+      box-shadow: var(--shadow);
+      border-radius: 24px;
+      padding: 14px 20px;
+    }
+
+    .logo-wrap img {
+      display: block;
+      max-width: 220px;
+      width: 100%;
+      height: auto;
+    }
+
+    .hero-title {
+      margin: 0;
+      font-size: clamp(1.8rem, 4vw, 3.2rem);
+      line-height: 1.05;
+      letter-spacing: -.03em;
+      text-align: center;
+    }
+
+    .hero-author {
+      margin: 0;
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .lang-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      appearance: none;
+      border: 1px solid rgba(15, 123, 168, 0.25);
+      border-radius: 14px;
+      background: #ffffff;
+      color: var(--primary);
+      padding: 10px 16px;
+      font-weight: 800;
+      font-size: .9rem;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(15, 123, 168, 0.12);
+      transition: transform .2s ease, background-color .2s ease, box-shadow .2s ease;
+      white-space: nowrap;
+    }
+
+    .lang-btn:hover {
+      background: rgba(15, 123, 168, 0.08);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(15, 123, 168, 0.18);
+    }
+
+    .lang-btn:active {
+      transform: translateY(0);
+    }
+
+    section { padding: 34px 0; }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      letter-spacing: -.02em;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 760px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(15,123,168,.12);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .image-card { padding: 18px; }
+
+    .image-card img {
+      width: 100%;
+      display: block;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .panel { padding: 22px; }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: nowrap;
+    }
+
+    .panel-title > div:first-child {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .panel-title h3 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .panel-title span {
+      color: var(--muted);
+      font-size: .96rem;
+    }
+
+    .panel-title-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: flex-end;
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+
+    .panel-title-actions .toggle-btn {
+      width: auto;
+      min-width: 0;
+      flex: 0 0 auto;
+      white-space: nowrap;
+      padding-left: 14px;
+      padding-right: 14px;
+    }
+
+    .tools-table-wrap {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(255,255,255,.86);
+    }
+
+    table.tools-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .tools-table thead th {
+      text-align: left;
+      font-size: .95rem;
+      color: white;
+      padding: 14px 16px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+    }
+
+    .tools-table tbody tr {
+      border-top: 1px solid var(--line);
+      transition: background .2s ease;
+    }
+
+    .tools-table tbody tr:hover {
+      background: rgba(15,123,168,.04);
+    }
+
+    .tools-table td {
+      padding: 16px;
+      vertical-align: top;
+      font-size: .95rem;
+      line-height: 1.5;
+    }
+
+    .col-app strong {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .account-tag {
+      display: inline-flex;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(15,123,168,.08);
+      color: var(--primary);
+      font-size: .82rem;
+      font-weight: 700;
+      border: 1px solid rgba(15,123,168,.12);
+    }
+
+    .tool-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 150px;
+      padding: 11px 14px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      box-shadow: 0 10px 22px rgba(14,104,140,.16);
+      cursor: pointer;
+      border: 0;
+    }
+
+    .tool-link:hover { opacity: .92; }
+    .tool-link:focus-visible {
+      outline: 3px solid rgba(14,166,183,.35);
+      outline-offset: 2px;
+    }
+
+    .tool-link.download-link {
+      background: linear-gradient(135deg, #334155, #475569);
+      color: #ffffff;
+      margin-top: 4px;
+    }
+
+    .tool-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .toggle-btn {
+      appearance: none;
+      border: 0;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      padding: 12px 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(14, 104, 140, .22);
+      transition: transform .2s ease, opacity .2s ease, background .2s ease;
+    }
+
+    .toggle-btn:hover { transform: translateY(-1px); }
+    .toggle-btn:active { transform: translateY(0); }
+
+    .toggle-btn.active {
+      background: linear-gradient(135deg, #173042, #0f4c6e);
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.35), 0 6px 16px rgba(15, 48, 66, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .all-tools-wrapper[hidden], .commands-wrapper[hidden] { display: none; }
+
+    .category-block {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      background: rgba(255,255,255,.78);
+      margin-top: 14px;
+    }
+
+    .category-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 14px;
+      font-size: 1.05rem;
+      color: var(--primary);
+    }
+
+    .category-title::before {
+      content: "";
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      box-shadow: 0 0 0 6px rgba(15,123,168,.08);
+    }
+
+    .commands-grid { display: grid; gap: 0; }
+
+    .examples {
+      display: grid;
+      gap: 18px;
+    }
+
+    .prompt-card {
+      position: relative;
+      overflow: hidden;
+      padding: 22px;
+      border-radius: 22px;
+      border: 1px solid rgba(15,123,168,.10);
+      box-shadow: var(--shadow);
+      background: white;
+    }
+
+    .prompt-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 8px;
+      border-radius: 22px 0 0 22px;
+      background: var(--stripe, var(--primary));
+    }
+
+    .prompt-card.c1 { --stripe: #0f7ba8; background: linear-gradient(180deg, #ffffff, #f4fbff); }
+    .prompt-card.c2 { --stripe: #7d5cff; background: linear-gradient(180deg, #ffffff, #f8f5ff); }
+    .prompt-card.c3 { --stripe: #16a085; background: linear-gradient(180deg, #ffffff, #f4fff9); }
+    .prompt-card.c4 { --stripe: #f59e0b; background: linear-gradient(180deg, #ffffff, #fffaf1); }
+    .prompt-card.c5 { --stripe: #ef476f; background: linear-gradient(180deg, #ffffff, #fff5f8); }
+    .prompt-card.c6 { --stripe: #00a6a6; background: linear-gradient(180deg, #ffffff, #f3ffff); }
+
+    .prompt-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .prompt-top h3 {
+      margin: 0;
+      font-size: 1.12rem;
+    }
+
+    .prompt-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 11px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.04);
+      font-weight: 800;
+      font-size: .82rem;
+    }
+
+    .prompt-body {
+      display: grid;
+      gap: 12px;
+    }
+
+    .prompt-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 14px;
+    }
+
+    .prompt-box {
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.82);
+      border: 1px solid rgba(15,123,168,.1);
+    }
+
+    .prompt-box strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--text);
+    }
+
+    .prompt-box .prompt-text {
+      display: block;
+      white-space: pre-wrap;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: #1b3650;
+      font-size: .94rem;
+      line-height: 1.6;
+    }
+
+    .prompt-box .prompt-text b {
+      font-weight: 800;
+      color: #102d45;
+    }
+
+    footer {
+      padding: 14px 0 34px;
+      color: var(--muted);
+      text-align: center;
+      font-size: .95rem;
+    }
+
+    @media (max-width: 900px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 14px;
+      }
+
+      .hero-author {
+        text-align: center;
+        white-space: normal;
+      }
+
+      .lang-btn {
+        margin: 0 auto;
+      }
+
+      .tools-table thead { display: none; }
+      .tools-table, .tools-table tbody, .tools-table tr, .tools-table td {
+        display: block;
+        width: 100%;
+      }
+
+      .tools-table tr { padding: 14px; }
+      .tools-table td { padding: 8px 0; border: 0; }
+      .tools-table td::before {
+        content: attr(data-label);
+        display: block;
+        font-size: .8rem;
+        font-weight: 800;
+        color: var(--primary);
+        text-transform: uppercase;
+        letter-spacing: .03em;
+        margin-bottom: 6px;
+      }
+
+      .panel-title { flex-wrap: wrap; }
+      .panel-title-actions {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: stretch;
+      }
+      .panel-title-actions .toggle-btn { flex: 1 1 220px; min-width: 0; }
+
+      .command-table, .command-table tbody, .command-table tr, .command-table td {
+        display: block; width: 100%;
+      }
+      .command-table thead { display: none; }
+      .command-table tr { border-top: 1px solid var(--line); padding: 10px 0; }
+      .command-table td { border: 0; padding: 7px 16px; }
+      .command-table td:first-child { width: 100%; }
+    }
+
+    @media (max-width: 600px) {
+      .container { width: min(var(--container), calc(100% - 14px)); }
+      .hero { padding-top: 20px; }
+      section { padding: 24px 0; }
+      .image-card { padding: 10px; }
+      .prompt-card { padding: 18px; }
+      .toggle-btn { width: 100%; }
+      .logo-wrap img { max-width: 190px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="container hero-inner">
+      <div class="logo-wrap">
+        <img src="https://tablabeducation.org/wp-content/uploads/2021/09/TU-logomain.png" alt="TeachUNITED" />
+      </div>
+      <h1 class="hero-title" data-i18n="heroTitle">Taller IA-Intermedio</h1>
+      <p class="hero-author" data-i18n="heroAuthor">Ing. Pedro Céspedes Vargas</p>
+      <div>
+        <button id="langToggle" class="lang-btn" type="button" aria-label="Cambiar idioma">
+          <span>🌐</span> <span id="langBtnText">English</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2 data-i18n="sec1Title">Guía de prompts efectivos</h2>
+            <p data-i18n="sec1Sub">Imagen principal de referencia para el taller sobre construcción de prompts efectivos.</p>
+          </div>
+        </div>
+        <div class="card image-card">
+          <img
+            id="promptGuideImage"
+            src="https://www.dropbox.com/scl/fi/xqgkm33p7h3yx42c4bfs5/prompt_efectivo_Esp.jpeg?rlkey=lkyod7j0pczgyfk7yy5x4aqbs&st=ocy1c6pu&raw=1"
+            alt="Guía práctica para prompts efectivos"
+            referrerpolicy="no-referrer"
+          />
+          <div id="promptGuideStatus" style="padding-top:12px; color:var(--muted); font-size:.92rem;" data-i18n="imgLoading">
+            Cargando imagen desde Dropbox...
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2 data-i18n="sec2Title">Herramientas de IA para explorar</h2>
+            <p data-i18n="sec2Sub">Se muestran en formato de tres columnas: nombre de la app con la cuenta indicada, explicación y enlace para abrir la herramienta.</p>
+          </div>
+        </div>
+
+        <div class="card panel">
+          <div class="panel-title">
+            <div>
+              <h3 data-i18n="featuredHeader">Herramientas destacadas</h3>
+              <span data-i18n="featuredSub">3 herramientas principales</span>
+            </div>
+          </div>
+          <div class="tools-table-wrap">
+            <table class="tools-table">
+              <thead>
+                <tr>
+                  <th data-i18n="thApp">App y cuenta</th>
+                  <th data-i18n="thDesc">Explicación</th>
+                  <th data-i18n="thAction">Abrir herramienta</th>
+                </tr>
+              </thead>
+              <tbody id="featuredList"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card panel" style="margin-top: 22px;">
+          <div class="panel-title">
+            <div>
+              <h3 data-i18n="exploreHeader">Explorar recursos</h3>
+              <span data-i18n="exploreSub">Consulta el listado completo de herramientas de IA o la guía de comandos</span>
+            </div>
+            <div class="panel-title-actions">
+              <button id="toggleTools" class="toggle-btn" type="button" data-i18n="btnShowTools">Mostrar todas las IA</button>
+              <button id="toggleCommands" class="toggle-btn" type="button" data-i18n="btnShowCmds">Mostrar todos los comandos</button>
+            </div>
+          </div>
+
+          <div id="allTools" class="all-tools-wrapper" hidden>
+            <div id="allToolsList"></div>
+          </div>
+
+          <div id="allCommands" class="commands-wrapper" hidden>
+            <div id="allCommandsList" class="commands-grid"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2 data-i18n="sec3Title">Ejemplos de prompts</h2>
+            <p data-i18n="sec3Sub">Ejemplos visuales con colores intercalados para que luego los puedas editar con facilidad.</p>
+          </div>
+        </div>
+        <div id="promptExamples" class="examples"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container" data-i18n="heroAuthor">Ing. Pedro Céspedes Vargas</div>
+  </footer>
+
+  <script>
+    let currentLang = 'es';
+
+    const uiTranslations = {
+      es: {
+        pageTitle: 'Taller IA-Intermedio',
+        heroTitle: 'Taller IA-Intermedio',
+        heroAuthor: 'Ing. Pedro Céspedes Vargas',
+        langBtn: 'English',
+        sec1Title: 'Guía de prompts efectivos',
+        sec1Sub: 'Imagen principal de referencia para el taller sobre construcción de prompts efectivos.',
+        imgLoading: 'Cargando imagen desde Dropbox...',
+        imgLoaded: 'Imagen cargada correctamente desde Dropbox. <a href="https://www.dropbox.com/scl/fi/xqgkm33p7h3yx42c4bfs5/prompt_efectivo_Esp.jpeg?rlkey=lkyod7j0pczgyfk7yy5x4aqbs&st=ocy1c6pu&dl=0" target="_blank" rel="noopener noreferrer">Abrir original</a>',
+        imgError: 'No fue posible mostrar la imagen directamente desde Dropbox en esta vista previa. Puedes abrirla aquí: <a href="https://www.dropbox.com/scl/fi/xqgkm33p7h3yx42c4bfs5/prompt_efectivo_Esp.jpeg?rlkey=lkyod7j0pczgyfk7yy5x4aqbs&st=ocy1c6pu&dl=0" target="_blank" rel="noopener noreferrer">ver imagen original</a>',
+        sec2Title: 'Herramientas de IA para explorar',
+        sec2Sub: 'Se muestran en formato de tres columnas: nombre de la app con la cuenta indicada, explicación y enlace para abrir la herramienta.',
+        featuredHeader: 'Herramientas destacadas',
+        featuredSub: '3 herramientas principales',
+        thApp: 'App y cuenta',
+        thDesc: 'Explicación',
+        thAction: 'Abrir herramienta',
+        exploreHeader: 'Explorar recursos',
+        exploreSub: 'Consulta el listado completo de herramientas de IA o la guía de comandos',
+        btnShowTools: 'Mostrar todas las IA',
+        btnHideTools: 'Ocultar listado completo',
+        btnShowCmds: 'Mostrar todos los comandos',
+        btnHideCmds: 'Ocultar todos los comandos',
+        downloadApp: 'Descargar App',
+        thCmd: 'Comando',
+        thCmdDesc: '¿Qué hace?',
+        sec3Title: 'Ejemplos de prompts',
+        sec3Sub: 'Ejemplos visuales con colores intercalados para que luego los puedas editar con facilidad.',
+        openWeb: 'Abrir sitio web',
+        accountLabel: 'Cuenta: ',
+        forWhat: '¿Para qué sirve?',
+        formulaLabel: 'Fórmula: ',
+        exampleLabel: 'ejemplo',
+        openLink: 'Abrir enlace'
+      },
+      en: {
+        pageTitle: 'AI Workshop - Intermediate',
+        heroTitle: 'AI Workshop - Intermediate',
+        heroAuthor: 'Eng. Pedro Céspedes Vargas',
+        langBtn: 'Español',
+        sec1Title: 'Effective Prompts Guide',
+        sec1Sub: 'Main reference image for the workshop on constructing effective prompts.',
+        imgLoading: 'Loading image from Dropbox...',
+        imgLoaded: 'Image loaded successfully from Dropbox. <a href="https://www.dropbox.com/scl/fi/figre0bpk2lhsc43y04aq/prompt_efectivo_ing.jpeg?rlkey=ydas0shuazcm943gs4gb508u6&st=fj3xm803&dl=0" target="_blank" rel="noopener noreferrer">Open original</a>',
+        imgError: 'Could not display image directly from Dropbox preview. You can open it here: <a href="https://www.dropbox.com/scl/fi/figre0bpk2lhsc43y04aq/prompt_efectivo_ing.jpeg?rlkey=ydas0shuazcm943gs4gb508u6&st=fj3xm803&dl=0" target="_blank" rel="noopener noreferrer">view original image</a>',
+        sec2Title: 'AI Tools to Explore',
+        sec2Sub: 'Displayed in three columns: app name with account type, explanation, and link to open the tool.',
+        featuredHeader: 'Featured Tools',
+        featuredSub: '3 main tools',
+        thApp: 'App & Account',
+        thDesc: 'Explanation',
+        thAction: 'Open Tool',
+        exploreHeader: 'Explore Resources',
+        exploreSub: 'Explore the full list of AI tools or the command guide',
+        btnShowTools: 'Show All AIs',
+        btnHideTools: 'Hide Full List',
+        btnShowCmds: 'Show All Commands',
+        btnHideCmds: 'Hide All Commands',
+        downloadApp: 'Download App',
+        thCmd: 'Command',
+        thCmdDesc: 'What does it do?',
+        sec3Title: 'Prompt Examples',
+        sec3Sub: 'Visual examples with alternating colors so you can easily edit them later.',
+        openWeb: 'Open Website',
+        accountLabel: 'Account: ',
+        forWhat: 'What is it for?',
+        formulaLabel: 'Formula: ',
+        exampleLabel: 'example',
+        openLink: 'Open link'
+      }
+    };
+
+    const dataByLang = {
+      es: {
+        featuredTools: [
+          {
+            name: 'ChatGPT',
+            account: 'Google',
+            description: 'Asistente conversacional muy versátil para redactar textos, resumir documentos, crear planificaciones, generar ideas, explicar temas complejos con lenguaje sencillo, traducir, programar, corregir escritos y diseñar materiales educativos. También puede ayudar a crear rúbricas, actividades, cuestionarios, guiones, correos y recursos adaptados a distintos niveles educativos.',
+            link: 'https://chat.openai.com/',
+            downloadLink: 'https://chatgpt.com/es-419/download/'
+          },
+          {
+            name: 'Gemini',
+            account: 'Google',
+            description: 'Herramienta de IA multimodal que permite trabajar con texto, imágenes y análisis de información. Es útil para investigar temas, organizar ideas, resumir contenidos, responder preguntas, generar materiales de apoyo, interpretar imágenes y apoyar procesos de búsqueda, planificación y creación de recursos para clases, talleres o presentaciones.',
+            link: 'https://gemini.google.com/'
+          },
+          {
+            name: 'TeachUnited.app (TU-BOT)',
+            account: 'Institucional',
+            description: 'Asistente educativo orientado al acompañamiento pedagógico. Puede apoyar a docentes y facilitadores en la creación de actividades, planeamientos, orientaciones metodológicas, reflexión sobre la práctica, resolución de dudas, preparación de sesiones y generación de recursos alineados con procesos de formación y mejora continua.',
+            link: 'https://teachunited.app/'
+          }
+        ],
+        allTools: [
+          { category: 'IA Generativa', name: 'Gemini', link: 'https://gemini.google.com/', account: 'Google', note: 'IA multimodal que ayuda a investigar, resumir, redactar, responder preguntas, analizar imágenes y organizar información para tareas, proyectos, clases y presentaciones.' },
+          { category: 'IA Generativa', name: 'ChatGPT', link: 'https://chat.openai.com/', account: 'Google', note: 'Asistente conversacional capaz de redactar textos, explicar conceptos, proponer ideas, programar, corregir escritos, crear actividades y apoyar procesos de aprendizaje y trabajo.', downloadLink: 'https://chatgpt.com/es-419/download/' },
+          { category: 'IA Generativa', name: 'Microsoft Copilot', link: 'https://copilot.microsoft.com/', account: 'MEP', note: 'Herramienta integrada al ecosistema Microsoft que facilita redacción, búsqueda, resúmenes, generación de ideas y apoyo en documentos, hojas de cálculo y presentaciones.' },
+          { category: 'IA Generativa', name: 'Grok', link: 'https://grok.com/', account: 'Google', note: 'IA orientada a respuestas rápidas y acceso a información de actualidad. Puede ser útil para explorar tendencias, generar ideas y conversar sobre temas recientes.' },
+          { category: 'IA Generativa', name: 'DeepSeek', link: 'https://chat.deepseek.com/', account: 'Google', note: 'Modelo fuerte en razonamiento, matemáticas, lógica y programación. Resulta útil para resolver problemas, analizar ejercicios y trabajar explicaciones paso a paso.' },
+          { category: 'IA Generativa', name: 'Perplexity AI', link: 'https://www.perplexity.ai/', account: 'Google', note: 'Buscador con IA que responde preguntas mostrando fuentes. Es ideal para investigar, contrastar información y encontrar referencias con mayor rapidez.' },
+          { category: 'IA Generativa', name: 'Qwen', link: 'https://chat.qwen.ai/', account: 'Google', note: 'IA potente para generación de texto, análisis, conversación y apoyo en código. Puede servir para redacción, explicaciones y tareas técnicas.' },
+          { category: 'IA Generativa', name: 'Claude', link: 'https://claude.ai/', account: 'Google', note: 'Herramienta destacada para trabajar textos largos, análisis de documentos, redacción estructurada, síntesis y apoyo en tareas que requieren respuestas extensas y cuidadas.' },
+          { category: 'IA Generativa', name: 'Mistral AI', link: 'https://chat.mistral.ai/', account: 'Google', note: 'IA ligera y rápida para conversación, generación de ideas, resúmenes, redacción y apoyo general en tareas académicas o profesionales.' },
+          { category: 'Imágenes', name: 'Ideogram', link: 'https://ideogram.ai/', account: 'Google', note: 'Generador de imágenes con muy buen manejo de texto dentro del diseño. Útil para afiches, portadas, recursos visuales, títulos y materiales creativos.' },
+          { category: 'Imágenes', name: 'Microsoft Designer', link: 'https://designer.microsoft.com/home', account: 'MEP', note: 'Plataforma sencilla para crear diseños, publicaciones, invitaciones, banners y materiales visuales con ayuda de IA, especialmente útil para usuarios principiantes.' },
+          { category: 'Imágenes', name: 'Leonardo AI', link: 'https://leonardo.ai/', account: 'Google', note: 'Herramienta enfocada en imágenes de alta calidad, arte conceptual, ilustraciones y recursos visuales detallados para proyectos educativos o creativos.' },
+          { category: 'Imágenes', name: 'Playground AI', link: 'https://playgroundai.com/', account: 'Google', note: 'Generador visual con interfaz amigable que permite experimentar con estilos de imagen, composiciones y materiales gráficos de forma sencilla.' },
+          { category: 'Imágenes', name: 'Adobe Firefly', link: 'https://firefly.adobe.com/', account: 'Google', note: 'Solución de Adobe para crear imágenes, efectos y variaciones visuales con enfoque en uso ético y flujos de trabajo integrados con herramientas de diseño.' },
+          { category: 'Audio/Música', name: 'Udio', link: 'https://www.udio.com/', account: 'Google', note: 'Plataforma para generar canciones con letra, voz, ritmo y estilo musical. Puede servir para proyectos creativos, actividades motivadoras o recursos multimedia.' },
+          { category: 'Audio/Música', name: 'Soundverse', link: 'https://www.soundverse.ai/', account: 'Google', note: 'Herramienta para crear música, pistas y efectos de audio con IA, útil para videos, presentaciones, juegos o actividades educativas interactivas.' },
+          { category: 'Voz', name: 'ElevenLabs', link: 'https://elevenlabs.io/', account: 'Google', note: 'Generador de voz realista que permite crear narraciones, locuciones, doblajes y audios para clases, videos, historias o materiales accesibles.' },
+          { category: 'Voz', name: 'PlayHT', link: 'https://play.ht/', account: 'Google', note: 'Herramienta de texto a voz con múltiples idiomas y voces. Es útil para producir audios, lecturas, cápsulas informativas y contenidos narrados.' },
+          { category: 'Video', name: 'Runway ML', link: 'https://runwayml.com/', account: 'Google', note: 'Plataforma avanzada para generar y editar video con IA, aplicar efectos, eliminar fondos, crear escenas y producir contenido audiovisual innovador.' },
+          { category: 'Video', name: 'Pika Labs', link: 'https://pika.art/', account: 'Google', note: 'Herramienta para crear clips animados a partir de texto o imágenes, ideal para prototipos visuales, introducciones o recursos llamativos.' },
+          { category: 'Video', name: 'Synthesia', link: 'https://www.synthesia.io/', account: 'Google', note: 'Permite crear videos con avatares virtuales que presentan información, muy útil para tutoriales, clases grabadas, inducciones y comunicaciones institucionales.' },
+          { category: 'Video', name: 'HeyGen', link: 'https://www.heygen.com/', account: 'Google', note: 'Generador de videos con avatares y voces que facilita la creación de explicaciones, cápsulas formativas y mensajes audiovisuales profesionales.' },
+          { category: 'Video', name: 'Luma AI', link: 'https://lumalabs.ai/', account: 'Google', note: 'Herramienta enfocada en video e imágenes realistas, captura 3D y generación visual avanzada para proyectos más inmersivos y creativos.' },
+          { category: 'Video', name: 'Kaiber', link: 'https://kaiber.ai/', account: 'Google', note: 'Plataforma útil para transformar imágenes en animaciones o crear videos con estilo artístico, ideal para piezas visuales creativas y expresivas.' },
+          { category: 'Video', name: 'Invideo AI', link: 'https://invideo.io/ai', account: 'Google', note: 'Genera videos completos a partir de instrucciones en texto, integrando guion, escenas, voz y edición básica para producir materiales rápidamente.' },
+          { category: 'Video', name: 'CapCut', link: 'https://www.capcut.com/', account: 'Google', note: 'Editor de video con funciones de IA para subtítulos, recortes, efectos, mejora visual y producción de contenido para redes, clases o presentaciones.' },
+          { category: 'Investigación', name: 'NotebookLM', link: 'https://notebooklm.google.com/', account: 'Google', note: 'Herramienta centrada en análisis de documentos y fuentes propias. Permite resumir, explicar, comparar ideas y obtener respuestas basadas en materiales cargados.' },
+          { category: 'Desarrollo', name: 'Google AI Studio', link: 'https://aistudio.google.com/', account: 'Google', note: 'Entorno para explorar modelos de IA, probar prompts, desarrollar prototipos y construir experiencias más avanzadas basadas en inteligencia artificial.' },
+          { category: 'Presentaciones', name: 'Kimi', link: 'https://www.kimi.com/', account: 'Google', note: 'Herramienta que puede apoyar en generación de contenidos, síntesis y creación de presentaciones o materiales explicativos de forma rápida.' },
+          { category: 'Presentaciones', name: 'Gamma', link: 'https://gamma.app/', account: 'Google', note: 'Plataforma para crear presentaciones modernas, páginas visuales y documentos dinámicos con diseño atractivo y generación asistida por IA.' }
+        ],
+        commandGroups: {
+          'Pensamiento y análisis': [
+            ['/redteam', 'Ataca tu propia idea. Busca errores, riesgos, puntos débiles y cosas que no estás viendo.'],
+            ['/meta', 'Analiza el propio prompt, detecta debilidades y propone una versión mejorada.'],
+            ['/alt3', 'Genera 3 alternativas claramente diferentes para comparar.'],
+            ['/truth', 'Responde de manera directa, evita relleno y reconoce claramente cuando no sabe algo.'],
+            ['/predict', 'Genera escenarios posibles a partir de los datos que proporcionas.'],
+            ['/OODA', 'Analiza mediante: Observar → Orientar → Decidir → Actuar.'],
+            ['/x10think', 'Profundiza el análisis para evitar respuestas superficiales.'],
+            ['/socrates', 'Utiliza preguntas socráticas para ayudarte a llegar a una conclusión.'],
+            ['/devils-advocate', 'Defiende el punto de vista contrario para probar la solidez de una idea.'],
+            ['/first-principles', 'Descompone el problema hasta sus principios fundamentales y reconstruye la solución desde cero.'],
+            ['/root-cause', 'Busca la causa raíz de un problema en lugar de quedarse en los síntomas.'],
+            ['/5whys', 'Utiliza la técnica de preguntar “¿por qué?” varias veces para encontrar la causa principal.'],
+            ['/assumptions', 'Identifica las suposiciones ocultas detrás de una idea o decisión.'],
+            ['/blindspots', 'Busca puntos ciegos, riesgos o aspectos que posiblemente no estás considerando.'],
+            ['/pros-cons', 'Divide el análisis entre ventajas y desventajas.'],
+            ['/steelman', 'Construye la versión más fuerte posible de una idea o argumento.'],
+            ['/critique', 'Evalúa críticamente una propuesta y recomienda mejoras.'],
+            ['/second-order', 'Analiza no solo qué ocurrirá, sino las consecuencias posteriores de una decisión.'],
+            ['/pre-mortem', 'Supone que el proyecto fracasó y busca cuáles podrían haber sido las causas.']
+          ],
+          'Escritura': [
+            ['/human', 'Hace que el texto suene más natural, conversacional y menos robótico.'],
+            ['/humanize', 'Reescribe un texto para que parezca más escrito por una persona.'],
+            ['/professional', 'Convierte el texto a un tono profesional.'],
+            ['/simple', 'Simplifica lenguaje, oraciones y estructura.'],
+            ['/concise', 'Reduce la respuesta a lo esencial.'],
+            ['/expand', 'Amplía el contenido agregando contexto y explicación.'],
+            ['/rewrite', 'Reescribe manteniendo la idea principal.'],
+            ['/polish', 'Mejora claridad, gramática, estilo y fluidez.'],
+            ['/formal', 'Cambia el texto a un estilo formal.'],
+            ['/casual', 'Cambia el texto a un estilo más relajado.'],
+            ['/persuasive', 'Convierte el contenido en un texto más convincente.'],
+            ['/storytelling', 'Convierte la explicación en una historia.'],
+            ['/executive', 'Resume con tono ejecutivo orientado a decisiones.'],
+            ['/academic', 'Reescribe con estilo académico.'],
+            ['/teacher', 'Explica utilizando un estilo docente.']
+          ],
+          'Explicación y aprendizaje': [
+            ['/eli5', 'Explica un tema como si se lo explicara a un niño de 5 años.'],
+            ['/eli10', 'Explica el tema como para un niño de 10 años.'],
+            ['/eli15', 'Explica para un adolescente.'],
+            ['/beginner', 'Explica suponiendo que no tienes conocimientos previos.'],
+            ['/expert', 'Explica a nivel avanzado o especializado.'],
+            ['/analogy', 'Explica utilizando analogías.'],
+            ['/example', 'Explica principalmente mediante ejemplos.'],
+            ['/step-by-step', 'Divide el proceso en pasos.'],
+            ['/teachme', 'Actúa como profesor y enseña progresivamente el tema.'],
+            ['/quizme', 'Después de explicar, crea preguntas para comprobar comprensión.'],
+            ['/flashcards', 'Convierte el contenido en tarjetas de estudio.'],
+            ['/faq', 'Convierte la información en preguntas frecuentes con respuestas.'],
+            ['/cheatsheet', 'Crea una hoja rápida de referencia.'],
+            ['/tldr', 'Resume un texto largo en sus puntos esenciales.'],
+            ['/visualizelearning', 'Para transformar textos extensos, conceptos difíciles o apuntes en una infografía, esquema visual o gráfico interactivo que facilita el aprendizaje rápido.']
+          ],
+          'Visualización de información · Organización visual': [
+            ['/iceberg', 'Organiza un tema desde lo visible y superficial hasta las causas profundas.'],
+            ['/quadrant', 'Divide la información en una matriz 2×2.'],
+            ['/funnel', 'Organiza un proceso desde una etapa amplia hasta una etapa final más específica.'],
+            ['/before-after', 'Compara visualmente el estado anterior con el posterior.'],
+            ['/decision-matrix', 'Crea una matriz para comparar alternativas según criterios.'],
+            ['/roadmap', 'Organiza un proyecto en fases y etapas.'],
+            ['/timeline', 'Organiza acontecimientos cronológicamente.'],
+            ['/flowchart', 'Convierte un proceso en un diagrama de flujo.'],
+            ['/mindmap', 'Convierte un tema en un mapa mental.'],
+            ['/concept-map', 'Organiza conceptos y relaciones entre ellos.'],
+            ['/hierarchy', 'Ordena información desde lo general hasta lo específico.'],
+            ['/tree', 'Representa opciones o conceptos mediante una estructura de árbol.'],
+            ['/matrix', 'Organiza información utilizando filas y columnas según dos dimensiones.'],
+            ['/pyramid', 'Organiza la información jerárquicamente desde una base amplia hasta un punto principal.']
+          ],
+          'Formatos visuales': [
+            ['/infographic', 'Resume la información como una infografía.'],
+            ['/comic-strip', 'Convierte un tema en una secuencia de viñetas tipo cómic.'],
+            ['/handwritten', 'Presenta la explicación como apuntes escritos a mano.'],
+            ['/onepager', 'Condensa todo el proyecto o información en una sola página.'],
+            ['/poster', 'Convierte el contenido en estructura de afiche.'],
+            ['/dashboard', 'Organiza datos e indicadores como un panel visual.'],
+            ['/cards', 'Divide la información en tarjetas.'],
+            ['/comparison', 'Muestra alternativas lado a lado para facilitar la comparación.'],
+            ['/table', 'Organiza la información en una tabla.'],
+            ['/checklist', 'Convierte la información en una lista de verificación.']
+          ],
+          'Negocios y proyectos': [
+            ['/swot', 'Genera un análisis FODA: fortalezas, oportunidades, debilidades y amenazas.'],
+            ['/business-model', 'Analiza cómo funcionaría un modelo de negocio.'],
+            ['/business-canvas', 'Organiza una idea según el Business Model Canvas.'],
+            ['/risk-matrix', 'Clasifica riesgos según probabilidad e impacto.'],
+            ['/priority-matrix', 'Ordena actividades según importancia y urgencia.'],
+            ['/impact-effort', 'Clasifica tareas según impacto y esfuerzo requerido.'],
+            ['/action-plan', 'Convierte una idea en acciones concretas.'],
+            ['/milestones', 'Divide el proyecto en hitos principales.'],
+            ['/kpi', 'Propone indicadores para medir resultados.'],
+            ['/smart', 'Convierte objetivos en objetivos SMART.'],
+            ['/pitch', 'Convierte una idea en un discurso breve para presentarla.'],
+            ['/elevator-pitch', 'Resume una idea en aproximadamente 30–60 segundos.'],
+            ['/executive-summary', 'Resume un proyecto para directivos o tomadores de decisiones.']
+          ],
+          'Investigación y evaluación': [
+            ['/research', 'Analiza un tema de manera estructurada.'],
+            ['/compare', 'Compara varias alternativas.'],
+            ['/factcheck', 'Identifica afirmaciones que deberían verificarse.'],
+            ['/evidence', 'Separa afirmaciones, evidencia y conclusiones.'],
+            ['/sources', 'Solicita fuentes o referencias para las afirmaciones.'],
+            ['/bias-check', 'Busca posibles sesgos en una explicación o argumento.'],
+            ['/counterargument', 'Produce argumentos contrarios.'],
+            ['/confidence', 'Pide indicar el nivel de confianza en cada conclusión.'],
+            ['/unknowns', 'Señala la información que falta antes de concluir.']
+          ]
+        },
+        promptExamples: [
+          {
+            title: 'Ejemplo 1 · Música de la tabla del siete',
+            formula: 'Estilo musical + tema educativo + estructura + reglas',
+            description: 'Este ejemplo muestra cómo solicitar a la IA una canción estilo hip-hop para memorizar la tabla de multiplicar del 7, manteniendo la secuencia numérica ordenada y una estructura musical clara.',
+            prompt: `crea una canción estilo hip-hop para aprender la tabla del 7. La letra debe incluir únicamente las multiplicaciones directas en orden, desde 7x1 hasta 7 x 10, con sus respectivos resultados, manteniendo un ritmo constante, rimas sencillas y una estructura clara con intro, estrofas, coro y outro.`
+          },
+          {
+            title: 'Ejemplo 2 · Crear un flyer del Día del Niño con el complemento Canva',
+            formula: 'Producto visual + fecha conmemorativa + estilo + contenido + formato',
+            description: 'Este ejemplo muestra cómo solicitar a la IA un flyer festivo e infantil con indicaciones claras sobre textos, imagen central, colores, elementos decorativos y formato de entrega.',
+            promptLabel: 'Prompt + Canva',
+            prompt: `Crea un flyer profesional, alegre y atractivo para la celebración del Día del Niño.
+Estilo: infantil, alegre, colorido, moderno y lleno de energía, manteniendo una apariencia profesional y cuidada.
+Elementos principales:
+
+Título grande y destacado: “¡Feliz Día del Niño!”
+Subtítulo: “Un día para celebrar, jugar, compartir y soñar”
+Imagen central: niños y niñas disfrutando de una celebración escolar, jugando y compartiendo en un ambiente alegre y seguro.
+Incorporar elementos visuales como globos, confeti, estrellas, juguetes, cometas, caramelos y detalles festivos.
+Colores: combinación vibrante y armoniosa de azul, amarillo, rojo, verde, naranja y otros colores alegres.
+Fondo luminoso, dinámico y festivo, con sensación de celebración.
+Detalles decorativos sutiles que transmitan alegría, imaginación, amistad y diversión.
+Evitar que el diseño se vea demasiado infantil o recargado; debe conservar una apariencia moderna y profesional.
+Formato vertical, alta calidad, composición equilibrada, excelente legibilidad y jerarquía visual.
+Dejar suficiente espacio visual para que el texto destaque claramente.
+Diseño: impactante, alegre y emotivo, apropiado para una institución educativa, listo para imprimir o compartir en redes sociales.`
+          },
+          {
+            title: 'Ejemplo 3 · Juego educativo ciclo del agua o App TODO',
+            formula: 'Rol técnico + tipo de juego/app + mecánicas/requisitos + evaluación/gestión + entrega',
+            description: 'Este ejemplo muestra dos opciones avanzadas para solicitar la generación de aplicaciones web completas e interactivas en un solo archivo HTML: a la izquierda, un juego educativo de plataformas en 2D sobre el ciclo del agua; a la derecha, una aplicación web profesional de gestión de tareas estilo Things 3 / Todoist.',
+            dualPrompts: [
+              {
+                label: 'Opción A: Juego educativo ciclo del agua',
+                prompt: `Actúa como un desarrollador web experto. Crea el código completo en HTML, CSS y JavaScript para un juego educativo de plataformas en 2D sobre el ciclo del agua. El jugador deberá desplazarse, saltar plataformas y recoger cinco gotas de agua; cada vez que recoja una, el juego se pausará y mostrará una pregunta de selección múltiple (4 opciones) sobre el ciclo del agua. Si responde correctamente, ganará puntos y recibirá una breve explicación; si responde incorrectamente, se mostrará la respuesta correcta con su explicación y el juego continuará sin sumar puntos. El HTML debe incluir un botón para iniciar, un canvas, un marcador de puntos y un modal para las preguntas. El CSS debe ofrecer una interfaz moderna, atractiva y responsiva. El JavaScript debe implementar el movimiento del personaje, la gravedad, las colisiones, las plataformas, los objetos coleccionables, un banco de cinco preguntas diferentes, el sistema de puntuación y la finalización del juego al responder las cinco preguntas, mostrando el puntaje final y un botón para volver a jugar. Utiliza únicamente HTML5, CSS3 y JavaScript puro, todo integrado en un solo archivo HTML, con código bien organizado y comentado para facilitar futuras modificaciones.`
+              },
+              {
+                label: 'Opción B: App TODO (Things 3 / Todoist)',
+                prompt: `Crea una aplicación web de gestión de tareas profesional (estilo Things 3 / Todoist) contenida en un ÚNICO archivo 'index.html' funcional 100% local (Tailwind CSS CDN, FontAwesome 6, Vanilla JS, LocalStorage).
+
+Requisitos indispensables:
+1. Captura Rápida Inteligente (NLP en vivo):
+   - Fechas relativas: "hoy", "mañana", "el [día]".
+   - Prioridades: "p1" (Alta/Rojo), "p2" (Media/Amarillo), "p3" (Baja/Azul).
+   - Etiquetas: palabras con "#" (#trabajo, #personal).
+   - Tiempo estimado: usa una regex válida y robusta como /\\b(?:(\\d+)\\s*h\\s*)?(?:(\\d+)\\s*m)\\b|\\b(\\d+)\\s*h\\b/i para detectar "45m", "1h" o "1h 30m" sin lanzar SyntaxError.
+
+2. UI/UX & Vistas Inteligentes (Sidebar + Main):
+   - Modo Claro/Oscuro (toggle manual y soporte de preferencia del sistema).
+   - Sidebar: Bandeja de entrada, Hoy, Próximos 7 días, Completadas y Filtro dinámico por Etiquetas.
+   - Búsqueda en tiempo real y Empty States con mensajes motivacionales.
+
+3. Gestión Avanzada & Gamificación:
+   - Subtareas/Checklists por tarea, edición en modal y borrado animado.
+   - Contador de Racha (días consecutivos con ícono de fuego) y meta diaria de completado.
+   - Exportación e Importación de respaldos en formato JSON.
+   - Sanitización de entradas (prevención XSS) y persistencia estricta en LocalStorage.`
+              }
+            ]
+          },
+          {
+            title: 'Ejemplo 4 · Consulta sobre mentalidad de crecimiento con TU-BOT',
+            formula: 'Consulta directa + Asistente pedagógico',
+            description: 'Este ejemplo muestra cómo utilizar TU-BOT (TeachUnited.app) para realizar una consulta pedagógica directa sobre la mentalidad de crecimiento y estrategias prácticas para el aula.',
+            actionLink: 'https://teachunited.app/',
+            actionLabel: 'Abrir TeachUnited.app (TU-BOT)',
+            promptLabel: 'Prompt + TU-BOT',
+            prompt: `¿Qué es la mentalidad de crecimiento y cómo se puede fomentar en el aula de clases?`
+          },
+          {
+            title: 'Ejemplo 5 · Cómic sobre personalización del aprendizaje con /comic-strip',
+            formula: 'Comando + tema + entorno + metodologías activas + dinámica visual',
+            description: 'Este ejemplo muestra cómo utilizar el comando /comic-strip para crear un cómic ilustrado y dinámico que refleja la personalización del entorno físico, virtual y del proceso educativo.',
+            promptLabel: 'Comando /comic-strip',
+            prompt: `/comic-strip Crea un cómic ilustrado y dinámico que muestre la personalización del aprendizaje en el aula física y virtual. La historia debe presentar a varios estudiantes tomando decisiones sobre su entorno: reorganizando las sillas en forma de U, creando rincones tranquilos de estudio, personalizando tablones de visión y decorando su espacio con elementos de su identidad cultural. Integra viñetas humorísticas e inspiradoras donde se aprecie la interacción con plataformas digitales (videos y anuncios adaptados) y el uso de metodologías activas como el aula invertida, reflejando cómo la personalización del lugar, la plataforma y el proceso transforma su experiencia de aprendizaje.`
+          }
+        ]
+      },
+      en: {
+        featuredTools: [
+          {
+            name: 'ChatGPT',
+            account: 'Google',
+            description: 'Highly versatile conversational assistant for drafting texts, summarizing documents, creating lesson plans, generating ideas, explaining complex topics simply, translating, coding, editing text, and designing educational materials. Also creates rubrics, activities, quizzes, scripts, emails, and tailored resources.',
+            link: 'https://chat.openai.com/',
+            downloadLink: 'https://chatgpt.com/es-419/download/'
+          },
+          {
+            name: 'Gemini',
+            account: 'Google',
+            description: 'Multimodal AI tool for working with text, images, and data analysis. Great for research, organizing ideas, summarizing content, answering questions, creating support materials, interpreting images, and aiding planning for classes and presentations.',
+            link: 'https://gemini.google.com/'
+          },
+          {
+            name: 'TeachUnited.app (TU-BOT)',
+            account: 'Institutional',
+            description: 'Educational assistant focused on pedagogical guidance. Supports teachers and facilitators in creating activities, lesson plans, methodological guidelines, practice reflection, answering queries, session prep, and resource generation aligned with continuous improvement.',
+            link: 'https://teachunited.app/'
+          }
+        ],
+        allTools: [
+          { category: 'Generative AI', name: 'Gemini', link: 'https://gemini.google.com/', account: 'Google', note: 'Multimodal AI that helps research, summarize, write, answer questions, analyze images, and organize information for tasks, projects, and presentations.' },
+          { category: 'Generative AI', name: 'ChatGPT', link: 'https://chat.openai.com/', account: 'Google', note: 'Conversational assistant capable of drafting text, explaining concepts, proposing ideas, programming, correcting writing, and supporting learning.', downloadLink: 'https://chatgpt.com/es-419/download/' },
+          { category: 'Generative AI', name: 'Microsoft Copilot', link: 'https://copilot.microsoft.com/', account: 'MEP', note: 'Tool integrated into the Microsoft ecosystem that facilitates writing, searching, summarizing, generating ideas, and document support.' },
+          { category: 'Generative AI', name: 'Grok', link: 'https://grok.com/', account: 'Google', note: 'AI focused on fast answers and access to current information. Great for exploring trends, generating ideas, and discussing recent topics.' },
+          { category: 'Generative AI', name: 'DeepSeek', link: 'https://chat.deepseek.com/', account: 'Google', note: 'Strong model in reasoning, math, logic, and programming. Useful for solving problems, analyzing exercises, and step-by-step explanations.' },
+          { category: 'Generative AI', name: 'Perplexity AI', link: 'https://www.perplexity.ai/', account: 'Google', note: 'AI search engine that answers questions with cited sources. Ideal for researching, cross-checking information, and finding references quickly.' },
+          { category: 'Generative AI', name: 'Qwen', link: 'https://chat.qwen.ai/', account: 'Google', note: 'Powerful AI for text generation, analysis, conversation, and code support. Useful for writing, explanations, and technical tasks.' },
+          { category: 'Generative AI', name: 'Claude', link: 'https://claude.ai/', account: 'Google', note: 'Outstanding tool for long texts, document analysis, structured writing, synthesis, and tasks requiring thorough answers.' },
+          { category: 'Generative AI', name: 'Mistral AI', link: 'https://chat.mistral.ai/', account: 'Google', note: 'Lightweight and fast AI for conversation, idea generation, summaries, writing, and general academic/professional support.' },
+          { category: 'Images', name: 'Ideogram', link: 'https://ideogram.ai/', account: 'Google', note: 'Image generator with excellent text handling within designs. Useful for posters, covers, visual resources, titles, and creative materials.' },
+          { category: 'Images', name: 'Microsoft Designer', link: 'https://designer.microsoft.com/home', account: 'MEP', note: 'Simple platform for creating designs, posts, invitations, banners, and visual materials with AI assistance.' },
+          { category: 'Images', name: 'Leonardo AI', link: 'https://leonardo.ai/', account: 'Google', note: 'Tool focused on high-quality images, concept art, illustrations, and detailed visual resources for educational or creative projects.' },
+          { category: 'Images', name: 'Playground AI', link: 'https://playgroundai.com/', account: 'Google', note: 'Visual generator with a user-friendly interface that lets you experiment with image styles, compositions, and graphic materials.' },
+          { category: 'Images', name: 'Adobe Firefly', link: 'https://firefly.adobe.com/', account: 'Google', note: 'Adobe solution for creating images, effects, and visual variations with an ethical focus integrated into design workflows.' },
+          { category: 'Audio/Music', name: 'Udio', link: 'https://www.udio.com/', account: 'Google', note: 'Platform to generate songs with lyrics, vocals, rhythm, and musical style. Great for creative projects and motivating activities.' },
+          { category: 'Audio/Music', name: 'Soundverse', link: 'https://www.soundverse.ai/', account: 'Google', note: 'Tool to create music, tracks, and audio effects with AI, useful for videos, presentations, games, or interactive educational activities.' },
+          { category: 'Voice', name: 'ElevenLabs', link: 'https://elevenlabs.io/', account: 'Google', note: 'Realistic voice generator for narrations, voiceovers, dubbing, and audio materials for classes, videos, and stories.' },
+          { category: 'Voice', name: 'PlayHT', link: 'https://play.ht/', account: 'Google', note: 'Text-to-speech tool with multiple languages and voices. Useful for producing audios, readings, news snippets, and narrated content.' },
+          { category: 'Video', name: 'Runway ML', link: 'https://runwayml.com/', account: 'Google', note: 'Advanced platform for generating and editing video with AI, applying effects, removing backgrounds, creating scenes, and producing innovative audiovisual content.' },
+          { category: 'Video', name: 'Pika Labs', link: 'https://pika.art/', account: 'Google', note: 'Tool to create animated clips from text or images, ideal for visual prototypes, intros, or eye-catching resources.' },
+          { category: 'Video', name: 'Synthesia', link: 'https://www.synthesia.io/', account: 'Google', note: 'Allows creating videos with virtual avatars presenting information, great for tutorials, recorded classes, inductions, and institutional communications.' },
+          { category: 'Video', name: 'HeyGen', link: 'https://www.heygen.com/', account: 'Google', note: 'Video generator with avatars and voices that facilitates explanations, training capsules, and professional audiovisual messages.' },
+          { category: 'Video', name: 'Luma AI', link: 'https://lumalabs.ai/', account: 'Google', note: 'Tool focused on realistic video and images, 3D capture, and advanced visual generation for immersive creative projects.' },
+          { category: 'Video', name: 'Kaiber', link: 'https://kaiber.ai/', account: 'Google', note: 'Useful platform to transform images into animations or create artistic style videos, ideal for creative visual pieces.' },
+          { category: 'Video', name: 'Invideo AI', link: 'https://invideo.io/ai', account: 'Google', note: 'Generates full videos from text prompts, combining scripts, scenes, voiceovers, and basic editing to quickly produce materials.' },
+          { category: 'Video', name: 'CapCut', link: 'https://www.capcut.com/', account: 'Google', note: 'Video editor with AI features for subtitles, trimming, effects, visual enhancement, and content production for social media, classes, or presentations.' },
+          { category: 'Research', name: 'NotebookLM', link: 'https://notebooklm.google.com/', account: 'Google', note: 'Tool focused on document analysis and custom sources. Allows summarizing, explaining, comparing ideas, and getting answers based on uploaded materials.' },
+          { category: 'Development', name: 'Google AI Studio', link: 'https://aistudio.google.com/', account: 'Google', note: 'Environment to explore AI models, test prompts, develop prototypes, and build advanced AI-driven experiences.' },
+          { category: 'Presentations', name: 'Kimi', link: 'https://www.kimi.com/', account: 'Google', note: 'Tool supporting content generation, synthesis, and quick creation of presentations or explanatory materials.' },
+          { category: 'Presentations', name: 'Gamma', link: 'https://gamma.app/', account: 'Google', note: 'Platform to create modern presentations, visual web pages, and dynamic documents with attractive AI-assisted design.' }
+        ],
+        commandGroups: {
+          'Thought & Analysis': [
+            ['/redteam', 'Attack your own idea. Search for errors, risks, weaknesses, and things you are missing.'],
+            ['/meta', 'Analyze the prompt itself, detect weaknesses, and propose an improved version.'],
+            ['/alt3', 'Generate 3 clearly different alternatives to compare.'],
+            ['/truth', 'Answer directly, avoid fluff, and clearly acknowledge when something is unknown.'],
+            ['/predict', 'Generate possible scenarios based on the data you provide.'],
+            ['/OODA', 'Analyze through: Observe → Orient → Decide → Act.'],
+            ['/x10think', 'Deepen the analysis to avoid superficial responses.'],
+            ['/socrates', 'Use Socratic questioning to help you reach a conclusion.'],
+            ['/devils-advocate', 'Defend the opposing point of view to test the strength of an idea.'],
+            ['/first-principles', 'Deconstruct the problem to its fundamental principles and rebuild from scratch.'],
+            ['/root-cause', 'Find the root cause of a problem instead of staying on the symptoms.'],
+            ['/5whys', 'Apply the 5 Whys technique to find the main root cause.'],
+            ['/assumptions', 'Identify hidden assumptions behind an idea or decision.'],
+            ['/blindspots', 'Look for blind spots, risks, or aspects you might not be considering.'],
+            ['/pros-cons', 'Divide the analysis into pros and cons.'],
+            ['/steelman', 'Construct the strongest possible version of an idea or argument.'],
+            ['/critique', 'Critically evaluate a proposal and recommend improvements.'],
+            ['/second-order', 'Analyze second-order consequences and downstream impacts of a decision.'],
+            ['/pre-mortem', 'Assume the project failed and analyze potential root causes.']
+          ],
+          'Writing': [
+            ['/human', 'Make text sound more natural, conversational, and less robotic.'],
+            ['/humanize', 'Rewrite text so it sounds human-written.'],
+            ['/professional', 'Convert text to a professional tone.'],
+            ['/simple', 'Simplify language, sentences, and structure.'],
+            ['/concise', 'Reduce response to key essentials.'],
+            ['/expand', 'Expand content adding context and explanation.'],
+            ['/rewrite', 'Rewrite while keeping the main idea.'],
+            ['/polish', 'Improve clarity, grammar, style, and flow.'],
+            ['/formal', 'Change text to a formal style.'],
+            ['/casual', 'Change text to a casual tone.'],
+            ['/persuasive', 'Convert content into persuasive writing.'],
+            ['/storytelling', 'Turn explanation into a story.'],
+            ['/executive', 'Summarize with a decision-oriented executive tone.'],
+            ['/academic', 'Rewrite with an academic style.'],
+            ['/teacher', 'Explain using a teaching style.']
+          ],
+          'Explanation & Learning': [
+            ['/eli5', 'Explain a topic like to a 5-year-old.'],
+            ['/eli10', 'Explain the topic for a 10-year-old.'],
+            ['/eli15', 'Explain for a teenager.'],
+            ['/beginner', 'Explain assuming no prior knowledge.'],
+            ['/expert', 'Explain at an advanced or specialized level.'],
+            ['/analogy', 'Explain using analogies.'],
+            ['/example', 'Explain mainly through examples.'],
+            ['/step-by-step', 'Break down process into steps.'],
+            ['/teachme', 'Act as a teacher and progressively teach the topic.'],
+            ['/quizme', 'Create questions after explaining to test understanding.'],
+            ['/flashcards', 'Convert content into study flashcards.'],
+            ['/faq', 'Convert info into FAQs with answers.'],
+            ['/cheatsheet', 'Create a quick reference cheat sheet.'],
+            ['/tldr', 'Summarize long text into essential points.'],
+            ['/visualizelearning', 'Transform extensive text, difficult concepts, or notes into an infographic, visual scheme, or interactive chart for fast learning.']
+          ],
+          'Information Visualization & Visual Organization': [
+            ['/iceberg', 'Organize a topic from visible surface level to deep root causes.'],
+            ['/quadrant', 'Divide information into a 2×2 matrix.'],
+            ['/funnel', 'Organize a process from a broad initial stage to a specific final stage.'],
+            ['/before-after', 'Visually compare the before and after states.'],
+            ['/decision-matrix', 'Create a matrix to compare alternatives based on criteria.'],
+            ['/roadmap', 'Organize a project into phases and milestones.'],
+            ['/timeline', 'Organize events chronologically.'],
+            ['/flowchart', 'Convert a process into a flowchart.'],
+            ['/mindmap', 'Convert a topic into a mind map.'],
+            ['/concept-map', 'Organize concepts and their relationships.'],
+            ['/hierarchy', 'Order information from general to specific.'],
+            ['/tree', 'Represent options or concepts in a tree structure.'],
+            ['/matrix', 'Organize info using rows and columns across two dimensions.'],
+            ['/pyramid', 'Organize info hierarchically from a broad base to an apex point.']
+          ],
+          'Visual Formats': [
+            ['/infographic', 'Summarize information as an infographic.'],
+            ['/comic-strip', 'Convert a topic into an educational comic strip sequence.'],
+            ['/handwritten', 'Present explanation as handwritten notes.'],
+            ['/onepager', 'Condense an entire project or info into a one-pager.'],
+            ['/poster', 'Convert content into a poster structure.'],
+            ['/dashboard', 'Organize data and indicators as a visual dashboard.'],
+            ['/cards', 'Divide information into cards.'],
+            ['/comparison', 'Display alternatives side by side for comparison.'],
+            ['/table', 'Organize information into a table.'],
+            ['/checklist', 'Convert information into a checklist.']
+          ],
+          'Business & Projects': [
+            ['/swot', 'Generate a SWOT analysis: strengths, weaknesses, opportunities, and threats.'],
+            ['/business-model', 'Analyze how a business model would operate.'],
+            ['/business-canvas', 'Organize an idea according to the Business Model Canvas.'],
+            ['/risk-matrix', 'Classify risks by probability and impact.'],
+            ['/priority-matrix', 'Sort activities by importance and urgency.'],
+            ['/impact-effort', 'Classify tasks by impact and effort required.'],
+            ['/action-plan', 'Convert an idea into concrete action steps.'],
+            ['/milestones', 'Divide project into key milestones.'],
+            ['/kpi', 'Propose KPIs to measure outcomes.'],
+            ['/smart', 'Convert goals into SMART objectives.'],
+            ['/pitch', 'Turn an idea into a short pitch presentation.'],
+            ['/elevator-pitch', 'Summarize an idea in 30–60 seconds.'],
+            ['/executive-summary', 'Summarize a project for executives and decision-makers.']
+          ],
+          'Research & Evaluation': [
+            ['/research', 'Analyze a topic in a structured manner.'],
+            ['/compare', 'Compare multiple alternatives.'],
+            ['/factcheck', 'Identify statements that should be fact-checked.'],
+            ['/evidence', 'Separate claims, evidence, and conclusions.'],
+            ['/sources', 'Request sources or references for claims.'],
+            ['/bias-check', 'Search for potential biases in an explanation or argument.'],
+            ['/counterargument', 'Produce counterarguments.'],
+            ['/confidence', 'Indicate confidence level in each conclusion.'],
+            ['/unknowns', 'Highlight missing information before drawing conclusions.']
+          ]
+        },
+        promptExamples: [
+          {
+            title: 'Example 1 · Seven Times Table Song',
+            formula: 'Musical style + educational topic + structure + rules',
+            description: 'This example shows how to request a hip-hop style song from AI to memorize the 7 times table, maintaining the ordered number sequence and clear song structure.',
+            prompt: `Create a hip-hop style song to learn the 7 times table. The lyrics must include only the direct multiplications in order, from 7x1 to 7x10, with their respective results, maintaining a steady rhythm, simple rhymes, and a clear structure with intro, verses, chorus, and outro.`
+          },
+          {
+            title: 'Example 2 · Create a Children\'s Day Flyer with Canva Add-on',
+            formula: 'Visual product + commemorative date + style + content + format',
+            description: 'This example shows how to request a festive and child-friendly flyer with clear instructions on text, central image, colors, decorative elements, and delivery format.',
+            promptLabel: 'Prompt + Canva',
+            prompt: `Create a professional, joyful, and eye-catching flyer for the Children's Day celebration.
+Style: cheerful, colorful, modern, and energetic, while maintaining a polished and professional look.
+Main elements:
+
+Big prominent title: “Happy Children's Day!”
+Subtitle: “A day to celebrate, play, share, and dream”
+Central image: boys and girls enjoying a school celebration, playing and sharing in a happy and safe environment.
+Incorporate visual elements like balloons, confetti, stars, toys, kites, candies, and festive details.
+Colors: vibrant and harmonious mix of blue, yellow, red, green, orange, and other cheerful colors.
+Luminous, dynamic, and festive background with a celebratory feel.
+Subtle decorative details conveying joy, imagination, friendship, and fun.
+Avoid making the design look overly childish or cluttered; it must maintain a modern, professional appearance.
+Vertical format, high quality, balanced composition, excellent legibility, and visual hierarchy.
+Leave enough visual space for the text to stand out clearly.
+Design: impactful, cheerful, and touching, appropriate for an educational institution, ready to print or share on social media.`
+          },
+          {
+            title: 'Example 3 · Water Cycle Educational Game or TODO App',
+            formula: 'Technical role + game/app type + mechanics/requirements + evaluation/management + delivery',
+            description: 'This example shows two advanced options for requesting complete interactive web applications in a single HTML file: on the left, a 2D educational platform game about the water cycle; on the right, a professional task management web app (Things 3 / Todoist style).',
+            dualPrompts: [
+              {
+                label: 'Option A: Water cycle educational game',
+                prompt: `Act as an expert web developer. Create the complete code in HTML, CSS, and JavaScript for a 2D educational platform game about the water cycle. The player must move, jump on platforms, and collect five water drops; each time a drop is collected, the game pauses and displays a multiple-choice question (4 options) about the water cycle. If answered correctly, the player earns points and receives a short explanation; if incorrect, the correct answer is shown with its explanation and the game continues without adding points. The HTML must include a start button, a canvas, a score display, and a question modal. The CSS should provide a modern, attractive, responsive interface. The JavaScript must implement character movement, gravity, collisions, platforms, collectible items, a pool of five different questions, scoring system, and game completion upon answering all five questions, showing the final score and a replay button. Use only pure HTML5, CSS3, and JavaScript, all integrated into a single HTML file with well-organized, commented code for easy future edits.`
+              },
+              {
+                label: 'Option B: TODO App (Things 3 / Todoist)',
+                prompt: `Create a professional task management web application (Things 3 / Todoist style) contained in a SINGLE functional 100% local 'index.html' file (Tailwind CSS CDN, FontAwesome 6, Vanilla JS, LocalStorage).
+
+Essential requirements:
+1. Smart Quick Capture (Live NLP):
+   - Relative dates: "today", "tomorrow", "on [day]".
+   - Priorities: "p1" (High/Red), "p2" (Medium/Yellow), "p3" (Low/Blue).
+   - Tags: words with "#" (#work, #personal).
+   - Estimated time: use a valid and robust regex such as /\\b(?:(\\d+)\\s*h\\s*)?(?:(\\d+)\\s*m)\\b|\\b(\\d+)\\s*h\\b/i to detect "45m", "1h" or "1h 30m" without throwing SyntaxError.
+
+2. UI/UX & Smart Views (Sidebar + Main):
+   - Light/Dark Mode (manual toggle and system preference support).
+   - Sidebar: Inbox, Today, Next 7 days, Completed, and Dynamic Tag Filter.
+   - Real-time search and Empty States with motivational messages.
+
+3. Advanced Management & Gamification:
+   - Subtasks/Checklists per task, modal editing, and animated deletion.
+   - Streak Counter (consecutive days with fire icon) and daily completion goal.
+   - Export and Import backup in JSON format.
+   - Input sanitization (XSS prevention) and strict LocalStorage persistence.`
+              }
+            ]
+          },
+          {
+            title: 'Example 4 · Growth Mindset Query with TU-BOT',
+            formula: 'Direct query + Pedagogical assistant',
+            description: 'This example shows how to use TU-BOT (TeachUnited.app) to make a direct pedagogical query about growth mindset and practical classroom strategies.',
+            actionLink: 'https://teachunited.app/',
+            actionLabel: 'Open TeachUnited.app (TU-BOT)',
+            promptLabel: 'Prompt + TU-BOT',
+            prompt: `What is a growth mindset and how can it be fostered in the classroom?`
+          },
+          {
+            title: 'Example 5 · Personalized Learning Comic with /comic-strip',
+            formula: 'Command + topic + environment + active methodologies + visual dynamics',
+            description: 'This example shows how to use the /comic-strip command to create an illustrated and dynamic comic reflecting the personalization of physical, virtual, and educational learning environments.',
+            promptLabel: 'Command /comic-strip',
+            prompt: `/comic-strip Create an illustrated and dynamic comic showing the personalization of learning in physical and virtual classrooms. The story should present several students making decisions about their environment: reorganizing chairs in a U-shape, creating quiet study nooks, personalizing vision boards, and decorating their space with elements of their cultural identity. Integrate humorous and inspiring panels showing interaction with digital platforms (adapted videos and announcements) and active methodologies like the flipped classroom, reflecting how personalizing the space, platform, and process transforms their learning experience.`
+          }
+        ]
+      }
+    };
+
+    const featuredList = document.getElementById('featuredList');
+    const allToolsList = document.getElementById('allToolsList');
+    const allToolsWrapper = document.getElementById('allTools');
+    const toggleBtn = document.getElementById('toggleTools');
+    const toggleCommandsBtn = document.getElementById('toggleCommands');
+    const allCommandsWrapper = document.getElementById('allCommands');
+    const allCommandsList = document.getElementById('allCommandsList');
+    const promptContainer = document.getElementById('promptExamples');
+    const langToggleBtn = document.getElementById('langToggle');
+    const langBtnText = document.getElementById('langBtnText');
+
+    function openInNewTab(url) {
+      const newTab = window.open(url, '_blank', 'noopener,noreferrer');
+      if (newTab) newTab.opener = null;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function renderTableRows(list, descriptionKey) {
+      const t = uiTranslations[currentLang];
+      return list.map((tool) => {
+        const safeName = escapeHtml(tool.name);
+        const safeAccount = escapeHtml(tool.account);
+        const safeDescription = escapeHtml(tool[descriptionKey] || tool.description || tool.note);
+        const safeLink = escapeHtml(tool.link);
+        const downloadBtn = tool.downloadLink 
+          ? `<a class="tool-link download-link" href="${escapeHtml(tool.downloadLink)}" target="_blank" rel="noopener noreferrer">${t.downloadApp}</a>`
+          : '';
+
+        return `
+          <tr>
+            <td class="col-app" data-label="${t.thApp}">
+              <strong>${safeName}</strong>
+              <span class="account-tag">${t.accountLabel}${safeAccount}</span>
+            </td>
+            <td data-label="${t.thDesc}">${safeDescription}</td>
+            <td data-label="${t.thAction}">
+              <div class="tool-actions">
+                <button class="tool-link" type="button" data-url="${safeLink}">${t.openWeb}</button>
+                ${downloadBtn}
+                <div style="font-size:.78rem; color:var(--muted); word-break:break-all;">${safeLink}</div>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderFeaturedTools() {
+      const data = dataByLang[currentLang];
+      featuredList.innerHTML = renderTableRows(data.featuredTools, 'description');
+    }
+
+    function groupByCategory(list) {
+      return list.reduce((acc, item) => {
+        if (!acc[item.category]) acc[item.category] = [];
+        acc[item.category].push(item);
+        return acc;
+      }, {});
+    }
+
+    function renderAllTools() {
+      const data = dataByLang[currentLang];
+      const grouped = groupByCategory(data.allTools);
+      const t = uiTranslations[currentLang];
+
+      allToolsList.innerHTML = Object.entries(grouped).map(([category, tools]) => {
+        const safeCategory = escapeHtml(category);
+        return `
+          <section class="category-block">
+            <h4 class="category-title">${safeCategory}</h4>
+            <div class="tools-table-wrap">
+              <table class="tools-table">
+                <thead>
+                  <tr>
+                    <th>${t.thApp}</th>
+                    <th>${t.thDesc}</th>
+                    <th>${t.thAction}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${renderTableRows(tools, 'note')}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        `;
+      }).join('');
+    }
+
+    function renderCommands() {
+      if (!allCommandsList) return;
+      const data = dataByLang[currentLang];
+      const t = uiTranslations[currentLang];
+
+      allCommandsList.innerHTML = Object.entries(data.commandGroups).map(([category, items]) => {
+        const safeCategory = escapeHtml(category);
+        const rows = items.map(([command, description]) => `
+          <tr>
+            <td class="col-app" data-label="${t.thCmd}">
+              <strong style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: var(--primary); font-size: 0.98rem;">${escapeHtml(command)}</strong>
+            </td>
+            <td data-label="${t.thCmdDesc}">${escapeHtml(description)}</td>
+          </tr>
+        `).join('');
+
+        return `
+          <section class="category-block">
+            <h4 class="category-title">${safeCategory}</h4>
+            <div class="tools-table-wrap">
+              <table class="tools-table">
+                <thead>
+                  <tr>
+                    <th style="width: 220px;">${t.thCmd}</th>
+                    <th>${t.thCmdDesc}</th>
+                  </tr>
+                </thead>
+                <tbody>${rows}</tbody>
+              </table>
+            </div>
+          </section>
+        `;
+      }).join('');
+    }
+
+    function renderPromptCard(item, index) {
+      const t = uiTranslations[currentLang];
+      const safeTitle = escapeHtml(item.title);
+      const safeFormula = escapeHtml(item.formula);
+      const safeDescription = escapeHtml(item.description);
+      
+      const actionLinkContent = item.actionLink ? `
+        <div style="margin-top:12px;">
+          <a href="${escapeHtml(item.actionLink)}" target="_blank" rel="noopener noreferrer" style="color:var(--primary); font-weight:800; text-decoration:underline;">${escapeHtml(item.actionLabel || t.openLink)}</a>
+        </div>
+      ` : '';
+
+      let promptBoxesHtml = '';
+      if (item.dualPrompts && Array.isArray(item.dualPrompts)) {
+        const cols = item.dualPrompts.map(dp => `
+          <div class="prompt-box">
+            <strong><b>${escapeHtml(dp.label)}</b> ${t.exampleLabel}</strong>
+            <div class="prompt-text">${escapeHtml(dp.prompt)}</div>
+          </div>
+        `).join('');
+        promptBoxesHtml = `<div class="prompt-grid-2">${cols}</div>`;
+      } else {
+        const safePromptLabel = escapeHtml(item.promptLabel || 'Prompt');
+        promptBoxesHtml = `
+          <div class="prompt-box">
+            <strong><b>${safePromptLabel}</b> ${t.exampleLabel}</strong>
+            <div class="prompt-text">${escapeHtml(item.prompt)}</div>
+          </div>
+        `;
+      }
+
+      const cardClass = `prompt-card c${(index % 6) + 1}`;
+
+      return `
+        <article class="${cardClass}">
+          <div class="prompt-top">
+            <h3>${safeTitle}</h3>
+            ${safeFormula ? `<span class="prompt-label">${t.formulaLabel}${safeFormula}</span>` : ''}
+          </div>
+          <div class="prompt-body">
+            <div>${safeDescription}</div>
+            ${promptBoxesHtml}
+            ${actionLinkContent}
+          </div>
+        </article>
+      `;
+    }
+
+    function renderPrompts() {
+      if (!promptContainer) return;
+      const data = dataByLang[currentLang];
+      promptContainer.innerHTML = data.promptExamples.map((item, idx) => renderPromptCard(item, idx)).join('');
+    }
+
+    function bindToolButtons() {
+      document.querySelectorAll('.tool-link[data-url]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const url = e.currentTarget.getAttribute('data-url');
+          if (url) openInNewTab(url);
+        });
+      });
+    }
+
+    const promptGuideImages = {
+      es: [
+        'https://www.dropbox.com/scl/fi/xqgkm33p7h3yx42c4bfs5/prompt_efectivo_Esp.jpeg?rlkey=lkyod7j0pczgyfk7yy5x4aqbs&st=ocy1c6pu&raw=1',
+        'https://www.dropbox.com/scl/fi/xqgkm33p7h3yx42c4bfs5/prompt_efectivo_Esp.jpeg?rlkey=lkyod7j0pczgyfk7yy5x4aqbs&st=ocy1c6pu&dl=1'
+      ],
+      en: [
+        'https://www.dropbox.com/scl/fi/figre0bpk2lhsc43y04aq/prompt_efectivo_ing.jpeg?rlkey=ydas0shuazcm943gs4gb508u6&st=fj3xm803&dl=0',
+        'https://www.dropbox.com/scl/fi/figre0bpk2lhsc43y04aq/prompt_efectivo_ing.jpeg?rlkey=ydas0shuazcm943gs4gb508u6&st=fj3xm803&dl=1'
+      ]
+    };
+
+    let imageAttempt = 0;
+
+    function loadGuideImage() {
+      const img = document.getElementById('promptGuideImage');
+      const status = document.getElementById('promptGuideStatus');
+      if (!img || !status) return;
+
+      imageAttempt = 0;
+      const urls = promptGuideImages[currentLang] || promptGuideImages.es;
+
+      status.innerHTML = uiTranslations[currentLang].imgLoading;
+
+      img.onload = () => {
+        status.innerHTML = uiTranslations[currentLang].imgLoaded;
+      };
+
+      img.onerror = () => {
+        imageAttempt += 1;
+        if (imageAttempt < urls.length) {
+          img.src = urls[imageAttempt];
+        } else {
+          status.innerHTML = uiTranslations[currentLang].imgError;
+        }
+      };
+
+      img.src = urls[0];
+    }
+
+    function updateLanguage(newLang) {
+      currentLang = newLang;
+      document.documentElement.lang = newLang;
+
+      const t = uiTranslations[newLang];
+
+      document.querySelectorAll('[data-i18n]').forEach((el) => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) {
+          if (key === 'btnShowTools') {
+            const isHidden = allToolsWrapper.hasAttribute('hidden');
+            el.textContent = isHidden ? t.btnShowTools : t.btnHideTools;
+          } else if (key === 'btnShowCmds') {
+            const isHidden = allCommandsWrapper.hasAttribute('hidden');
+            el.textContent = isHidden ? t.btnShowCmds : t.btnHideCmds;
+          } else {
+            el.innerHTML = t[key];
+          }
+        }
+      });
+
+      langBtnText.textContent = t.langBtn;
+
+      renderFeaturedTools();
+      renderAllTools();
+      renderCommands();
+      renderPrompts();
+      bindToolButtons();
+      loadGuideImage();
+    }
+
+    function setupToggle() {
+      if (!toggleBtn) return;
+      toggleBtn.addEventListener('click', () => {
+        const isHidden = allToolsWrapper.hasAttribute('hidden');
+        const t = uiTranslations[currentLang];
+        if (isHidden) {
+          allToolsWrapper.removeAttribute('hidden');
+          toggleBtn.textContent = t.btnHideTools;
+          toggleBtn.classList.add('active');
+        } else {
+          allToolsWrapper.setAttribute('hidden', '');
+          toggleBtn.textContent = t.btnShowTools;
+          toggleBtn.classList.remove('active');
+        }
+      });
+    }
+
+    function setupCommandsToggle() {
+      if (!toggleCommandsBtn || !allCommandsWrapper) return;
+      toggleCommandsBtn.addEventListener('click', () => {
+        const isHidden = allCommandsWrapper.hasAttribute('hidden');
+        const t = uiTranslations[currentLang];
+
+        if (isHidden) {
+          allCommandsWrapper.removeAttribute('hidden');
+          toggleCommandsBtn.textContent = t.btnHideCmds;
+          toggleCommandsBtn.classList.add('active');
+        } else {
+          allCommandsWrapper.setAttribute('hidden', '');
+          toggleCommandsBtn.textContent = t.btnShowCmds;
+          toggleCommandsBtn.classList.remove('active');
+        }
+      });
+    }
+
+    function setupLanguageSwitcher() {
+      if (!langToggleBtn) return;
+      langToggleBtn.addEventListener('click', () => {
+        const nextLang = currentLang === 'es' ? 'en' : 'es';
+        updateLanguage(nextLang);
+      });
+    }
+
+    function init() {
+      renderFeaturedTools();
+      renderAllTools();
+      renderCommands();
+      renderPrompts();
+      bindToolButtons();
+      setupToggle();
+      setupCommandsToggle();
+      setupLanguageSwitcher();
+      loadGuideImage();
+    }
+
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
